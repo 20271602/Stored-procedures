@@ -1,1 +1,32 @@
+-- Stored Procedure para ordenar los por orden alfabetico los nombres de los alumnos --
 
+
+DELIMITER //
+CREATE PROCEDURE sp_orden_alumnos (IN field CHAR(20))
+BEGIN
+	IF field <> ' ' THEN
+		SET @orden_nombre = concat('ORDER BY', field);
+	ELSE
+		SET @orden_nombre = ' ';
+	END IF;
+    
+    SET @clausula = concat('SELECT * FROM ALUMNO' , @orden_nombre);
+    PREPARE runSQL FROM @clausula;
+    EXECUTE runSQL;
+    DEALLOCATE PREPARE runSQL;
+END //
+DELIMITER ;
+
+
+-- Stored Procedure para actualizar los sueldos de los profesores --
+
+
+DELIMITER //
+CREATE PROCEDURE ActualizarSueldoProfesor
+    (IN nombreProfesor VARCHAR(100), IN nuevoSueldo DECIMAL(10, 2))
+BEGIN
+    UPDATE profesor
+    SET sueldo = nuevoSueldo
+    WHERE nombre = nombreProfesor;
+END //
+DELIMITER ;
